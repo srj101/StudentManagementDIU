@@ -138,6 +138,7 @@ public class StudentPortal extends javax.swing.JFrame {
 
     private void clubButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clubButtonActionPerformed
         // TODO add your handling code here:
+        dispose();
         new JoinaClub().setVisible(true);
     }//GEN-LAST:event_clubButtonActionPerformed
 
