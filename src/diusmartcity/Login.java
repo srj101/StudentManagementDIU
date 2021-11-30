@@ -89,13 +89,14 @@ public class Login extends javax.swing.JFrame {
         });
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(552, 486, -1, 56));
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/diusmartcity/close.png"))); // NOI18N
+        jButton3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jButton3.setText("x");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1220, 20, 30, -1));
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1220, 20, 40, 40));
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/diusmartcity/login.jpg"))); // NOI18N
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -121,6 +122,7 @@ public class Login extends javax.swing.JFrame {
         String PasswordTyped = new String(passwordField.getPassword());
         if(name.equals("admin") && PasswordTyped.equals("1234") )
         {
+            dispose();
             new StudentPortal().setVisible(true);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
