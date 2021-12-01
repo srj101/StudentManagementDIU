@@ -5,6 +5,17 @@
  */
 package diusmartcity;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author SheikhFoysal
@@ -14,8 +25,47 @@ public class Library extends javax.swing.JFrame {
     /**
      * Creates new form Library
      */
+    
+    private int studentId;
+     public  Connection conn=null;
     public Library() {
+        DatabaseConnection Database = new DatabaseConnection();
+        conn = Database.getcon();
+        
         initComponents();
+        
+    }
+    public Library(int id){
+        
+        DatabaseConnection Database = new DatabaseConnection();
+        conn = Database.getcon();
+        initComponents();
+        DefaultTableModel tblModel = (DefaultTableModel)bookTable.getModel();
+        this.studentId = id;
+        System.out.println(studentId);
+        try {
+                String SQLL = "SELECT * FROM studentBook where studentId='"+this.studentId+"'";
+                try (Statement stmt = conn.createStatement()) {
+                    ResultSet rs = stmt.executeQuery(SQLL);
+
+                    while(rs.next()){
+                        String bookNo = Integer.toString(rs.getInt("bookNo"));
+                        System.out.println(bookNo);
+                        String bookName = rs.getString("bookName");
+                        String date = rs.getString("date");
+                        
+                        
+                        String tbData[] = {bookNo,bookName,date};
+                        
+                        tblModel.addRow(tbData);
+
+                    }
+
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(Library.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
     }
 
     /**
@@ -31,24 +81,24 @@ public class Library extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator2 = new javax.swing.JSeparator();
         jSeparator3 = new javax.swing.JSeparator();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jTextField2 = new javax.swing.JTextField();
+        bookTermField = new javax.swing.JTextField();
+        bookSearchButton = new javax.swing.JButton();
+        bookNameField = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
+        bookNoField = new javax.swing.JTextField();
+        bookCatField = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        bookSelfField = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        bookTable = new javax.swing.JTable();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        returnButton = new javax.swing.JButton();
+        borrowButton = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        navBackButton = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -62,15 +112,20 @@ public class Library extends javax.swing.JFrame {
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
         getContentPane().add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 210, 50, 453));
         getContentPane().add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 182, 1260, 10));
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(442, 126, 225, -1));
+        getContentPane().add(bookTermField, new org.netbeans.lib.awtextra.AbsoluteConstraints(442, 126, 225, -1));
 
-        jButton1.setBackground(new java.awt.Color(0, 255, 255));
-        jButton1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton1.setText("Search");
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(704, 122, -1, -1));
+        bookSearchButton.setBackground(new java.awt.Color(0, 255, 255));
+        bookSearchButton.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        bookSearchButton.setText("Search");
+        bookSearchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bookSearchButtonActionPerformed(evt);
+            }
+        });
+        getContentPane().add(bookSearchButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(704, 122, -1, -1));
 
-        jTextField2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 260, 248, -1));
+        bookNameField.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        getContentPane().add(bookNameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 260, 248, -1));
 
         jLabel2.setBackground(new java.awt.Color(255, 255, 204));
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -78,11 +133,11 @@ public class Library extends javax.swing.JFrame {
         jLabel2.setText("Book Name");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 270, 89, -1));
 
-        jTextField3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 320, 248, -1));
+        bookNoField.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        getContentPane().add(bookNoField, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 320, 248, -1));
 
-        jTextField4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        getContentPane().add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 400, 248, -1));
+        bookCatField.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        getContentPane().add(bookCatField, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 400, 248, -1));
 
         jLabel3.setBackground(new java.awt.Color(255, 255, 204));
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -102,18 +157,15 @@ public class Library extends javax.swing.JFrame {
         jLabel5.setText("Self No");
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 480, -1, -1));
 
-        jTextField5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        getContentPane().add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 480, 248, -1));
+        bookSelfField.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        getContentPane().add(bookSelfField, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 480, 248, -1));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        bookTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
-                "Book ID", "Book Name", "Remaing Days"
+                "Book ID", "Book Name", "Issue Date"
             }
         ) {
             Class[] types = new Class [] {
@@ -131,7 +183,7 @@ public class Library extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(bookTable);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 250, -1, 359));
 
@@ -146,15 +198,25 @@ public class Library extends javax.swing.JFrame {
         jLabel7.setText("Your Registered Books");
         getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 220, -1, -1));
 
-        jButton2.setBackground(new java.awt.Color(255, 153, 153));
-        jButton2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jButton2.setText("Return");
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(104, 617, -1, -1));
+        returnButton.setBackground(new java.awt.Color(255, 153, 153));
+        returnButton.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        returnButton.setText("Return");
+        returnButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                returnButtonActionPerformed(evt);
+            }
+        });
+        getContentPane().add(returnButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(104, 617, -1, -1));
 
-        jButton3.setBackground(new java.awt.Color(153, 255, 0));
-        jButton3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jButton3.setText("Borrow");
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 620, -1, -1));
+        borrowButton.setBackground(new java.awt.Color(153, 255, 0));
+        borrowButton.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        borrowButton.setText("Borrow");
+        borrowButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                borrowButtonActionPerformed(evt);
+            }
+        });
+        getContentPane().add(borrowButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 620, -1, -1));
 
         jButton4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jButton4.setText("x");
@@ -165,15 +227,15 @@ public class Library extends javax.swing.JFrame {
         });
         getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1229, 19, -1, 34));
 
-        jButton5.setBackground(new java.awt.Color(255, 255, 51));
-        jButton5.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jButton5.setText("Back");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        navBackButton.setBackground(new java.awt.Color(255, 255, 51));
+        navBackButton.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        navBackButton.setText("Back");
+        navBackButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                navBackButtonActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 630, -1, -1));
+        getContentPane().add(navBackButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 630, -1, -1));
 
         jLabel8.setBackground(new java.awt.Color(255, 255, 204));
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
@@ -189,11 +251,88 @@ public class Library extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void navBackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_navBackButtonActionPerformed
         // TODO add your handling code here:
         dispose();
         new StudentPortal().setVisible(true);
-    }//GEN-LAST:event_jButton5ActionPerformed
+    }//GEN-LAST:event_navBackButtonActionPerformed
+
+    private void bookSearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookSearchButtonActionPerformed
+        // TODO add your handling code here:
+        String term = bookTermField.getText();
+        try {
+            String QUERYY = "SELECT COUNT(*) AS rowcount FROM book where bookNo='"+term+"'";
+            Statement stmt = conn.createStatement();
+            
+            ResultSet rss = stmt.executeQuery(QUERYY);
+            rss.next();
+            int count = rss.getInt("rowcount") ;
+            if(count>0) {
+                String QUERY = "SELECT * FROM book where bookNo='"+term+"'";
+                try{
+                    ResultSet rs = stmt.executeQuery(QUERY);
+                    rs.next();
+                    bookNameField.setText(rs.getString("bookName"));
+                    bookNoField.setText(rs.getString("bookNo"));
+                    bookCatField.setText(rs.getString("category"));
+                    bookSelfField.setText(rs.getString("self"));
+                }catch(SQLException ex) {
+                    Logger.getLogger(Library.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }else {
+                JOptionPane.showMessageDialog(null, "No Book Found","Nothing Found",JOptionPane.INFORMATION_MESSAGE);
+            }
+            stmt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Library.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_bookSearchButtonActionPerformed
+
+    private void borrowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrowButtonActionPerformed
+        // TODO add your handling code here:
+        if(bookCatField.equals("") && bookNameField.equals("") && bookNoField.equals("") && bookSelfField.equals("")){
+            JOptionPane.showMessageDialog(null, "Please Select a Book by searching with Book Number","Book Selection",JOptionPane.OK_OPTION);
+        }else {
+            int bookNo = Integer.parseInt(bookNoField.getText());
+            int studentId = this.studentId;
+            String bookName = bookNameField.getText();
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());  
+            String timeStamp=timestamp.toString();  
+            String sql = "INSERT INTO studentBook(studentId, bookNo, bookName, date) VALUES ('"+studentId+"','"+bookNo+"','"+bookName+"','"+timeStamp+"')";
+            try{
+                try (Statement stmt = conn.createStatement()) {
+                    stmt.execute(sql);
+                    JOptionPane.showMessageDialog(null, "Your Borrowed Book No '"+bookNo+"'\nPlease Return the Book within 10 days","Book Borrow Confirmation",JOptionPane.INFORMATION_MESSAGE);
+                    dispose();
+                    new Library(this.studentId).setVisible(true);
+                }
+            }catch(SQLException e) {
+                System.out.println("SQL wrong :"+e);
+            }
+        }
+    }//GEN-LAST:event_borrowButtonActionPerformed
+
+    private void returnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnButtonActionPerformed
+        // TODO add your handling code here:
+        if(bookCatField.equals("") && bookNameField.equals("") && bookNoField.equals("") && bookSelfField.equals("")){
+            JOptionPane.showMessageDialog(null, "Please Select a Book by searching with Book Number","Book Selection",JOptionPane.OK_OPTION);
+        }else {
+            int bookNo = Integer.parseInt(bookNoField.getText());
+            String sql = "delete from studentBook where studentId='"+this.studentId+"' and bookNo='"+bookNo+"'";
+            try {
+                Statement st = conn.createStatement();
+               st.execute(sql);
+               st.close();
+               JOptionPane.showMessageDialog(null, "Your Returned Book No '"+bookNo+"'\nNever Stop Learning!","Book Return Confirmation",JOptionPane.OK_OPTION);
+               dispose();
+                new Library(this.studentId).setVisible(true);
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Student.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_returnButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -231,11 +370,15 @@ public class Library extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JTextField bookCatField;
+    private javax.swing.JTextField bookNameField;
+    private javax.swing.JTextField bookNoField;
+    private javax.swing.JButton bookSearchButton;
+    private javax.swing.JTextField bookSelfField;
+    private javax.swing.JTable bookTable;
+    private javax.swing.JTextField bookTermField;
+    private javax.swing.JButton borrowButton;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -248,11 +391,7 @@ public class Library extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
+    private javax.swing.JButton navBackButton;
+    private javax.swing.JButton returnButton;
     // End of variables declaration//GEN-END:variables
 }

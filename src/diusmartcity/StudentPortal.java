@@ -16,11 +16,24 @@ public class StudentPortal extends javax.swing.JFrame {
     /**
      * Creates new form StudentPortal
      */
+    private int id;
+    private String email;
+    private String password;
     public StudentPortal() {
         initComponents();
         //clubButton.setBackground(new Color (0,0,0,1) );
     }
+    
+    public StudentPortal(int id,String email,String password){
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        
+        initComponents();
+        
+    }
 
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -72,7 +85,7 @@ public class StudentPortal extends javax.swing.JFrame {
                 clubButtonActionPerformed(evt);
             }
         });
-        getContentPane().add(clubButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(85, 174, 200, 200));
+        getContentPane().add(clubButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(85, 174, 200, 160));
 
         jButton3.setBackground(new java.awt.Color(204, 204, 255));
         jButton3.setForeground(new java.awt.Color(102, 102, 102));
@@ -82,7 +95,7 @@ public class StudentPortal extends javax.swing.JFrame {
                 jButton3ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 170, 200, 200));
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 170, 200, 160));
 
         jButton4.setBackground(new java.awt.Color(204, 255, 204));
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/diusmartcity/payment.png"))); // NOI18N
@@ -91,7 +104,7 @@ public class StudentPortal extends javax.swing.JFrame {
                 jButton4ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(656, 174, 200, 200));
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(656, 174, 200, 160));
 
         jButton5.setBackground(new java.awt.Color(204, 204, 255));
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/diusmartcity/event.png"))); // NOI18N
@@ -100,31 +113,31 @@ public class StudentPortal extends javax.swing.JFrame {
                 jButton5ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(956, 174, 200, 200));
+        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(956, 174, 200, 160));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Join a Club");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(85, 385, 200, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 350, 200, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Library");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(354, 385, 200, -1));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 350, 200, -1));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Payment");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(656, 385, 200, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 350, 200, -1));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("Upcomming Event");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(956, 385, 200, -1));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 350, 200, -1));
 
         jButton1.setBackground(new java.awt.Color(255, 204, 102));
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -134,7 +147,7 @@ public class StudentPortal extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 600, 89, 88));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 660, 89, 40));
 
         jButton2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jButton2.setText("x");
@@ -161,7 +174,7 @@ public class StudentPortal extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         dispose();
-        new Library().setVisible(true);
+        new Library(this.id).setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

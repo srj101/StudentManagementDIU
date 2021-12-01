@@ -28,7 +28,7 @@ public class DatabaseConnection {
         System.out.println("Connecting database...");
 
         try  {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/DIUsmartCity","root","");
+            conn = DriverManager.getConnection("jdbc:mysql://sql6.freesqldatabase.com:3306/sql6455505","sql6455505","ndyl1XDiJi");
             System.out.println("Database connected!");
         } catch (SQLException e) {
             //throw new IllegalStateException("Cannot connect the database!", e);

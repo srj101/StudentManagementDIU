@@ -6,6 +6,11 @@
 package diusmartcity;
 
 import java.awt.Color;
+import java.sql.*;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 // Bhalo
 /**
  *
@@ -16,9 +21,12 @@ public class Admission extends javax.swing.JFrame {
     /**
      * Creates new form Admission
      */
+    public  Connection conn=null;
     public Admission() {
         initComponents();
         jPanel2.setBackground(new Color(0,0,0,65));
+        DatabaseConnection Database = new DatabaseConnection();
+        conn = Database.getcon();
     }
 
     /**
@@ -32,7 +40,7 @@ public class Admission extends javax.swing.JFrame {
 
         jLabel14 = new javax.swing.JLabel();
         jPasswordField1 = new javax.swing.JPasswordField();
-        jLabel1 = new javax.swing.JLabel();
+        logoText = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -43,24 +51,24 @@ public class Admission extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        nameField = new javax.swing.JTextField();
+        phoneField = new javax.swing.JTextField();
+        addressField = new javax.swing.JTextField();
+        gpaField = new javax.swing.JTextField();
+        fatherField = new javax.swing.JTextField();
+        motherField = new javax.swing.JTextField();
+        nationalityField = new javax.swing.JTextField();
+        admissionButton = new javax.swing.JButton();
+        navBackButton = new javax.swing.JButton();
+        departmentCombo = new javax.swing.JComboBox<>();
         jSeparator2 = new javax.swing.JSeparator();
         jLabel10 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jComboBox3 = new javax.swing.JComboBox<>();
+        genderCombo = new javax.swing.JComboBox<>();
+        bloodCombo = new javax.swing.JComboBox<>();
         jLabel15 = new javax.swing.JLabel();
         jComboBox4 = new javax.swing.JComboBox<>();
-        jButton3 = new javax.swing.JButton();
+        closeButton = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
 
         jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/diusmartcity/admission.jpg"))); // NOI18N
@@ -71,8 +79,8 @@ public class Admission extends javax.swing.JFrame {
         setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/diusmartcity/admission.gif"))); // NOI18N
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(462, 29, -1, -1));
+        logoText.setIcon(new javax.swing.ImageIcon(getClass().getResource("/diusmartcity/admission.gif"))); // NOI18N
+        getContentPane().add(logoText, new org.netbeans.lib.awtextra.AbsoluteConstraints(462, 29, -1, -1));
         getContentPane().add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 96, 1250, 10));
 
         jPanel2.setBackground(new java.awt.Color(255, 153, 153));
@@ -120,41 +128,46 @@ public class Admission extends javax.swing.JFrame {
         jLabel9.setText("Department*");
         jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(685, 19, 150, -1));
 
-        jTextField1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jPanel2.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(187, 16, 225, -1));
+        nameField.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jPanel2.add(nameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(187, 16, 225, -1));
 
-        jTextField2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jPanel2.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(187, 75, 225, -1));
+        phoneField.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jPanel2.add(phoneField, new org.netbeans.lib.awtextra.AbsoluteConstraints(187, 75, 225, -1));
 
-        jTextField3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jPanel2.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(187, 138, 225, -1));
+        addressField.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jPanel2.add(addressField, new org.netbeans.lib.awtextra.AbsoluteConstraints(187, 138, 225, -1));
 
-        jTextField4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jPanel2.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(187, 218, 225, -1));
+        gpaField.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jPanel2.add(gpaField, new org.netbeans.lib.awtextra.AbsoluteConstraints(187, 218, 225, -1));
 
-        jTextField5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jPanel2.add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(187, 285, 225, -1));
+        fatherField.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jPanel2.add(fatherField, new org.netbeans.lib.awtextra.AbsoluteConstraints(187, 285, 225, -1));
 
-        jTextField6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jPanel2.add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(187, 366, 225, -1));
+        motherField.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jPanel2.add(motherField, new org.netbeans.lib.awtextra.AbsoluteConstraints(187, 366, 225, -1));
 
-        jTextField7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jPanel2.add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(187, 444, 225, -1));
+        nationalityField.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jPanel2.add(nationalityField, new org.netbeans.lib.awtextra.AbsoluteConstraints(187, 444, 225, -1));
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/diusmartcity/submit.png"))); // NOI18N
-        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 500, -1, -1));
-
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/diusmartcity/back.png"))); // NOI18N
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        admissionButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/diusmartcity/submit.png"))); // NOI18N
+        admissionButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                admissionButtonActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 500, -1, -1));
+        jPanel2.add(admissionButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 500, -1, -1));
 
-        jComboBox1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CSE", "EEE", "Pharmacy", "BBA", "NFE" }));
-        jPanel2.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 20, 97, -1));
+        navBackButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/diusmartcity/back.png"))); // NOI18N
+        navBackButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                navBackButtonActionPerformed(evt);
+            }
+        });
+        jPanel2.add(navBackButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 500, -1, -1));
+
+        departmentCombo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        departmentCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CSE", "EEE", "Pharmacy", "BBA", "NFE" }));
+        jPanel2.add(departmentCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 20, 97, -1));
         jPanel2.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 480, 1230, -1));
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -167,13 +180,13 @@ public class Admission extends javax.swing.JFrame {
         jLabel12.setText("Blood Group*");
         jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 150, 160, -1));
 
-        jComboBox2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Male", "Female", "Others" }));
-        jPanel2.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 80, -1, -1));
+        genderCombo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        genderCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Male", "Female", "Others" }));
+        jPanel2.add(genderCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 80, -1, -1));
 
-        jComboBox3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "A+ve", "A-ve", "B+ve", "B-ve", "O+ve", "O-ve", "AB+ve", "AB-ve" }));
-        jPanel2.add(jComboBox3, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 150, -1, -1));
+        bloodCombo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        bloodCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "A+ve", "A-ve", "B+ve", "B-ve", "O+ve", "O-ve", "AB+ve", "AB-ve" }));
+        jPanel2.add(bloodCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 150, -1, -1));
 
         jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/diusmartcity/admission.jpg"))); // NOI18N
         jPanel2.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -183,13 +196,13 @@ public class Admission extends javax.swing.JFrame {
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 117, 1250, 590));
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/diusmartcity/close.png"))); // NOI18N
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        closeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/diusmartcity/close.png"))); // NOI18N
+        closeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                closeButtonActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1240, 10, 30, 30));
+        getContentPane().add(closeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1240, 10, 30, 30));
 
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/diusmartcity/admission1.jpg"))); // NOI18N
         jLabel11.setText("jLabel11");
@@ -199,16 +212,81 @@ public class Admission extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void navBackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_navBackButtonActionPerformed
         // TODO add your handling code here:
         dispose();
         new Dashboard().setVisible(true);
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_navBackButtonActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
         // TODO add your handling code here:
         System.exit(WIDTH);
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_closeButtonActionPerformed
+
+    public String givenUsingJava8_whenGeneratingRandomAlphanumericString_thenCorrect() {
+    int leftLimit = 48; // numeral '0'
+    int rightLimit = 122; // letter 'z'
+    int targetStringLength = 10;
+    Random random = new Random();
+
+    String generatedString = random.ints(leftLimit, rightLimit + 1)
+      .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+      .limit(targetStringLength)
+      .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+      .toString();
+
+    return generatedString;
+}
+    
+    private void admissionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_admissionButtonActionPerformed
+        // TODO add your handling code here:
+        String name = nameField.getText();
+        String address = addressField.getText();
+        String phone = phoneField.getText();
+        Double gpa = Double.parseDouble(gpaField.getText());
+        String fatherName = fatherField.getText();
+        String motherName = motherField.getText();
+        String nationality = nationalityField.getText();
+        String department = departmentCombo.getSelectedItem().toString();
+        String gender = genderCombo.getSelectedItem().toString();
+        String bloodGroup = bloodCombo.getSelectedItem().toString();
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());  
+        String timeStamp=timestamp.toString();  
+        String password = givenUsingJava8_whenGeneratingRandomAlphanumericString_thenCorrect();
+        
+        Student s = new Student(name,phone,address,gpa,fatherName,motherName,nationality,department,gender,bloodGroup);
+        
+        try {
+            String QUERY = "SELECT COUNT(*) AS rowcount FROM student where phone='"+phone+"'";
+            
+            Statement stmt = conn.createStatement();
+            
+            ResultSet rs = stmt.executeQuery(QUERY);
+            rs.next();
+            int count = rs.getInt("rowcount") ;
+            
+            if(count>0) {
+                JOptionPane.showMessageDialog(null, "Already admitted", "Warning",JOptionPane.ERROR_MESSAGE);
+            }else {
+                String sql = "INSERT INTO student( name, password, phone, address, gpa, father, mother, nationality, department, gender, bloodGroup, email, waiver, paid, payable, date) VALUES ('"+name+"','"+password+"','"+phone+"','"+address+"','"+gpa+"','"+fatherName+"','"+motherName+"','"+nationality+"','"+department+"','"+gender+"','"+bloodGroup+"','"+s.getEmail()+"','"+s.getWaiver()+"','"+s.getPaid()+"','"+s.getPayable()+"','"+timeStamp+"')";
+
+                 if(name.equals("") || gpa.equals("") || department.equals("")) {
+                    System.out.println("Please Fill Out the Form");
+                }else {
+                    try{
+                            stmt.execute(sql);
+                            JOptionPane.showMessageDialog(null, "Admission Successful\nEmail: '"+s.getEmail()+"'\nPassword: '"+password+"'", "Success",JOptionPane.INFORMATION_MESSAGE);
+                    }catch(SQLException e) {
+                        System.out.println("SQL wrong :"+e);
+                    }
+                }
+            }
+            stmt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Admission.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_admissionButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -246,14 +324,15 @@ public class Admission extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
+    private javax.swing.JTextField addressField;
+    private javax.swing.JButton admissionButton;
+    private javax.swing.JComboBox<String> bloodCombo;
+    private javax.swing.JButton closeButton;
+    private javax.swing.JComboBox<String> departmentCombo;
+    private javax.swing.JTextField fatherField;
+    private javax.swing.JComboBox<String> genderCombo;
+    private javax.swing.JTextField gpaField;
     private javax.swing.JComboBox<String> jComboBox4;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -271,12 +350,11 @@ public class Admission extends javax.swing.JFrame {
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
+    private javax.swing.JLabel logoText;
+    private javax.swing.JTextField motherField;
+    private javax.swing.JTextField nameField;
+    private javax.swing.JTextField nationalityField;
+    private javax.swing.JButton navBackButton;
+    private javax.swing.JTextField phoneField;
     // End of variables declaration//GEN-END:variables
 }
