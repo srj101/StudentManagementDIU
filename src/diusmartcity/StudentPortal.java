@@ -168,7 +168,7 @@ public class StudentPortal extends javax.swing.JFrame {
     private void clubButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clubButtonActionPerformed
         // TODO add your handling code here:
         dispose();
-        new JoinaClub().setVisible(true);
+        new JoinaClub(this.id).setVisible(true);
     }//GEN-LAST:event_clubButtonActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -191,7 +191,7 @@ public class StudentPortal extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
         dispose();
-        new Payment().setVisible(true);
+        new Payment(this.id).setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed

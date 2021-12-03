@@ -28,12 +28,9 @@ public class Library extends javax.swing.JFrame {
     
     private int studentId;
      public  Connection conn=null;
+     DatabaseConnection Database = new DatabaseConnection();
     public Library() {
-        DatabaseConnection Database = new DatabaseConnection();
-        conn = Database.getcon();
-        
         initComponents();
-        
     }
     public Library(int id){
         
@@ -42,7 +39,6 @@ public class Library extends javax.swing.JFrame {
         initComponents();
         DefaultTableModel tblModel = (DefaultTableModel)bookTable.getModel();
         this.studentId = id;
-        System.out.println(studentId);
         try {
                 String SQLL = "SELECT * FROM studentBook where studentId='"+this.studentId+"'";
                 try (Statement stmt = conn.createStatement()) {

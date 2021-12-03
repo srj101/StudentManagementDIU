@@ -54,7 +54,7 @@ public class Student {
             this.payable = 499500.0;
         }
         
-        if(this.gpa>8.00) {
+        if(this.gpa>=8.00) {
             this.payable = this.payable - this.payable*0.2;
             this.waiver = "20%";
         }

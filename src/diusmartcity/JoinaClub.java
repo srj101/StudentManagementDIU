@@ -5,7 +5,15 @@
  */
 package diusmartcity;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -18,12 +26,43 @@ public class JoinaClub extends javax.swing.JFrame {
     /**
      * Creates new form JoinaClub
      */
-   
-    public JoinaClub() {
-       
-        initComponents();
-      
+   private int studentId;
+     public  Connection conn=null;
+     DatabaseConnection Database = new DatabaseConnection();
         
+    public JoinaClub() {
+        
+    }
+    
+    public JoinaClub(int id){
+            this.studentId = id;
+            initComponents();
+            conn = Database.getcon();
+            
+            
+            // Joined Clubs table
+            DefaultTableModel tblModel = (DefaultTableModel)ClubTable.getModel();
+            
+            try {
+                String SQLL = "SELECT * FROM clubStudent where studentId='"+this.studentId+"'";
+                try (Statement stmt = conn.createStatement()) {
+                    ResultSet rs = stmt.executeQuery(SQLL);
+
+                    while(rs.next()){
+                        String clubId = Integer.toString(rs.getInt("clubId"));
+                        String clubName = rs.getString("clubName");
+                        String date = rs.getString("date");
+                        
+                        String tbData[] = {clubId,clubName,date};
+                        
+                        tblModel.addRow(tbData);
+
+                    }
+
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(JoinaClub.class.getName()).log(Level.SEVERE, null, ex);
+            }
     }
     
 
@@ -41,17 +80,17 @@ public class JoinaClub extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        ClubTable = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        NameField = new javax.swing.JLabel();
+        clubListCombo = new javax.swing.JComboBox<>();
         jSeparator3 = new javax.swing.JSeparator();
         jSeparator4 = new javax.swing.JSeparator();
-        jButton1 = new javax.swing.JButton();
+        clubJoinButton = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        backButton = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
 
@@ -66,24 +105,21 @@ public class JoinaClub extends javax.swing.JFrame {
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
         getContentPane().add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 141, 10, 566));
 
-        jTable1.setAutoCreateRowSorter(true);
-        jTable1.setBackground(new java.awt.Color(204, 255, 255));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        ClubTable.setAutoCreateRowSorter(true);
+        ClubTable.setBackground(new java.awt.Color(204, 255, 255));
+        ClubTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+
             },
             new String [] {
-                "Club ID", "Club Name"
+                "Club ID", "Club Name", "Joined"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -94,11 +130,12 @@ public class JoinaClub extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
+        ClubTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jScrollPane1.setViewportView(ClubTable);
+        if (ClubTable.getColumnModel().getColumnCount() > 0) {
+            ClubTable.getColumnModel().getColumn(0).setResizable(false);
+            ClubTable.getColumnModel().getColumn(1).setResizable(false);
+            ClubTable.getColumnModel().getColumn(2).setResizable(false);
         }
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 275, 554, 414));
@@ -115,28 +152,33 @@ public class JoinaClub extends javax.swing.JFrame {
         jLabel3.setText("Register For a New Club");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(259, 115, -1, -1));
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(51, 0, 51));
-        jLabel4.setText("Club Name ");
-        jLabel4.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(255, 255, 255)));
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(141, 305, 120, 20));
+        NameField.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        NameField.setForeground(new java.awt.Color(51, 0, 51));
+        NameField.setText("Club Name ");
+        NameField.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(255, 255, 255)));
+        getContentPane().add(NameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(141, 305, 120, 20));
 
-        jComboBox1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CPC - Computer Programming Club", "DIU Pharmacia Club", "DIU Pharmacia Club", "Daffodil Prothom- aloBondhuShova" }));
-        getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(329, 304, -1, -1));
+        clubListCombo.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        clubListCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CPC - Computer Programming Club", "DIU Pharmacy Club", "DIU Cultural Club", "Daffodil Prothom- aloBondhuShova" ,"DIU Nature Study","DIU Health Club (DIUHC)","DIU Communication Club.","DIU Creative Park (Dept. of MCT)","Sports Club"}));
+        clubListCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clubListComboActionPerformed(evt);
+            }
+        });
+        getContentPane().add(clubListCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(329, 304, 240, -1));
         getContentPane().add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 219, 613, 10));
         getContentPane().add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 218, 584, 10));
 
-        jButton1.setBackground(new java.awt.Color(255, 102, 102));
-        jButton1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton1.setText("Join ");
-        jButton1.setBorder(new javax.swing.border.MatteBorder(null));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        clubJoinButton.setBackground(new java.awt.Color(255, 102, 102));
+        clubJoinButton.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        clubJoinButton.setText("Join ");
+        clubJoinButton.setBorder(new javax.swing.border.MatteBorder(null));
+        clubJoinButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                clubJoinButtonActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 350, 60, 40));
+        getContentPane().add(clubJoinButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 350, 60, 40));
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(329, 460, 97, -1));
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/diusmartcity/close.png"))); // NOI18N
@@ -147,16 +189,16 @@ public class JoinaClub extends javax.swing.JFrame {
         });
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1230, 20, 30, -1));
 
-        jButton4.setBackground(new java.awt.Color(204, 204, 255));
-        jButton4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton4.setText("Back");
-        jButton4.setBorder(new javax.swing.border.MatteBorder(null));
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        backButton.setBackground(new java.awt.Color(204, 204, 255));
+        backButton.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        backButton.setText("Back");
+        backButton.setBorder(new javax.swing.border.MatteBorder(null));
+        backButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                backButtonActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 350, 60, 40));
+        getContentPane().add(backButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 350, 60, 40));
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/diusmartcity/ClubJoin.jpg"))); // NOI18N
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -168,20 +210,60 @@ public class JoinaClub extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void clubJoinButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clubJoinButtonActionPerformed
+        int clubId = clubListCombo.getSelectedIndex();
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());  
+        String date=timestamp.toString();  
+        String clubName = clubListCombo.getSelectedItem().toString();
+        
+        String sql = "INSERT INTO clubStudent(studentId,clubId,clubName,date) VALUES ('"+this.studentId+"','"+clubId+"','"+clubName+"','"+date+"')";
+        String QUERY = "SELECT COUNT(*) AS rowcount FROM clubStudent where clubId='"+clubId+"' and studentId='"+this.studentId+"'";
+       
+        
+        try{
+            Statement stmt = conn.createStatement();
+            
+            ResultSet rs = stmt.executeQuery(QUERY);
+            rs.next();
+            int count =  rs.getInt("rowcount");
+            
+            if(count>0) {
+                JOptionPane.showMessageDialog(null, "You have already Joined this club","Can't Join",JOptionPane.ERROR_MESSAGE);
+            }else {
+                try{
+                    try (Statement stmtt = conn.createStatement()) {
+                    stmtt.execute(sql);
+                    JOptionPane.showMessageDialog(null, "You are now a member of '"+clubName+"'","Welcome to '"+clubName+"'",JOptionPane.INFORMATION_MESSAGE);
+                    dispose();
+                    new JoinaClub(this.studentId).setVisible(true);
+                }
+                }catch(SQLException e) {
+                    System.out.println("SQL wrong :"+e);
+                }
+            }
+        }
+        catch(SQLException e) {
+            System.out.println("SQL wrong :"+e);
+        }
+        
+        
+        
+    }//GEN-LAST:event_clubJoinButtonActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         System.exit(0);
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         // TODO add your handling code here:
         dispose();
         new StudentPortal().setVisible(true);
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_backButtonActionPerformed
+
+    private void clubListComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clubListComboActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_clubListComboActionPerformed
 
     /**
      * @param args the command line arguments
@@ -219,16 +301,17 @@ public class JoinaClub extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JTable ClubTable;
+    private javax.swing.JLabel NameField;
+    private javax.swing.JButton backButton;
+    private javax.swing.JButton clubJoinButton;
+    private javax.swing.JComboBox<String> clubListCombo;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JColorChooser jColorChooser1;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
@@ -236,6 +319,5 @@ public class JoinaClub extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
-    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }

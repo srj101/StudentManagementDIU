@@ -5,6 +5,14 @@
  */
 package diusmartcity;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author SheikhFoysal
@@ -14,8 +22,39 @@ public class Events extends javax.swing.JFrame {
     /**
      * Creates new form Events
      */
+    
+    public  Connection conn=null;
+    DatabaseConnection Database = new DatabaseConnection();
+    
     public Events() {
         initComponents();
+        conn = Database.getcon();
+        
+        DefaultTableModel tblModel = (DefaultTableModel)eventsTable.getModel();
+            
+            try {
+                String SQLL = "SELECT * FROM events";
+                try (Statement stmt = conn.createStatement()) {
+                    ResultSet rs = stmt.executeQuery(SQLL);
+
+                    while(rs.next()){
+                        String eventName = rs.getString("eventName");
+                        String venue = rs.getString("venue");
+                        String date = rs.getString("date");
+                        String ticketPrice = Double.toString(rs.getDouble("ticketPrice"));
+                        
+                        
+                        String tbData[] = {eventName,venue,ticketPrice,date};
+                        
+                        tblModel.addRow(tbData);
+
+                    }
+
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(JoinaClub.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
     }
 
     /**
@@ -31,7 +70,7 @@ public class Events extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        eventsTable = new javax.swing.JTable();
         jButton2 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
 
@@ -50,12 +89,9 @@ public class Events extends javax.swing.JFrame {
         });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1223, 11, -1, 31));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        eventsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Event Name", "Venue", "Ticket Price", "Date"
@@ -76,7 +112,13 @@ public class Events extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(eventsTable);
+        if (eventsTable.getColumnModel().getColumnCount() > 0) {
+            eventsTable.getColumnModel().getColumn(0).setResizable(false);
+            eventsTable.getColumnModel().getColumn(1).setResizable(false);
+            eventsTable.getColumnModel().getColumn(2).setResizable(false);
+            eventsTable.getColumnModel().getColumn(3).setResizable(false);
+        }
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(395, 190, 600, -1));
 
@@ -143,12 +185,12 @@ public class Events extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable eventsTable;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }

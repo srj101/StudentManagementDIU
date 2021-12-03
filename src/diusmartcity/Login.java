@@ -154,7 +154,7 @@ public class Login extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        //{ "CPC - Computer Programming Club", "DIU Pharmacy Club", "DIU Cultural Club", "Daffodil Prothom- aloBondhuShova" ,"DIU Nature Study","DIU Health Club (DIUHC)","DIU Communication Club.","DIU Creative Park (Dept. of MCT)","Sports Club"}
     }//GEN-LAST:event_loginButtonActionPerformed
 
     /**

@@ -5,6 +5,16 @@
  */
 package diusmartcity;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author SheikhFoysal
@@ -14,10 +24,57 @@ public class Payment extends javax.swing.JFrame {
     /**
      * Creates new form Payment
      */
+    public  Connection conn=null;
+    private int studentId;
     public Payment() {
         initComponents();
     }
+    
+    public Payment(int id){
+        this.studentId = id;
+        DatabaseConnection Database = new DatabaseConnection();
+        conn = Database.getcon();
+        initComponents();
+        
+        DefaultTableModel tblModel = (DefaultTableModel)TransactionTable.getModel();
+        
+        try {
+                String SQLL = "SELECT * FROM payments where studentId='"+this.studentId+"'";
+                try (Statement stmt = conn.createStatement()) {
+                    ResultSet rs = stmt.executeQuery(SQLL);
 
+                    while(rs.next()){
+                        String type = rs.getString("type");
+                        String amount = Double.toString(rs.getDouble("amount"));
+                        String date = rs.getString("date");
+                        String transactionID = rs.getString("transactionId");
+                        
+                        
+                        String tbData[] = {type,amount,date,transactionID};
+                        
+                        tblModel.addRow(tbData);
+
+                    }
+
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(Library.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
+    }
+
+    
+    public static String generateTransactionID(int len) {
+        
+		String chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijk"
+          +"lmnopqrstuvwxyz!@#$%&";
+		Random rnd = new Random();
+		StringBuilder sb = new StringBuilder(len);
+		for (int i = 0; i < len; i++)
+			sb.append(chars.charAt(rnd.nextInt(chars.length())));
+		return sb.toString();
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -31,19 +88,17 @@ public class Payment extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator2 = new javax.swing.JSeparator();
         jLabel2 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        paymentTypeCombo = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        amountField = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        payButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        TransactionTable = new javax.swing.JTable();
         jLabel6 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        navBackButton = new javax.swing.JButton();
+        dateSpinner = new javax.swing.JSpinner();
         jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -61,43 +116,34 @@ public class Payment extends javax.swing.JFrame {
         jLabel2.setText("Payment Type");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(147, 225, 105, 28));
 
-        jComboBox1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mid Term", "Final Term" }));
-        getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(354, 228, 114, -1));
+        paymentTypeCombo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        paymentTypeCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mid Term", "Final Term" }));
+        getContentPane().add(paymentTypeCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(354, 228, 114, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel3.setText("Amount (Taka)");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(147, 312, -1, -1));
 
-        jTextField1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(354, 312, 114, -1));
-
-        jTextField2.setEditable(false);
-        jTextField2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(354, 390, 114, -1));
+        amountField.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        getContentPane().add(amountField, new org.netbeans.lib.awtextra.AbsoluteConstraints(354, 312, 114, -1));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setText("Date");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(147, 391, 105, 20));
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel5.setText("Transaction ID ");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(147, 470, -1, -1));
+        payButton.setBackground(new java.awt.Color(51, 255, 51));
+        payButton.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        payButton.setText("Pay Now! ");
+        payButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                payButtonActionPerformed(evt);
+            }
+        });
+        getContentPane().add(payButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(247, 549, -1, -1));
 
-        jTextField3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(353, 470, 115, -1));
-
-        jButton1.setBackground(new java.awt.Color(51, 255, 51));
-        jButton1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton1.setText("Pay Now! ");
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(247, 549, -1, -1));
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        TransactionTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Payment Type", "Amount", "Date", "Transaction ID"
@@ -118,7 +164,7 @@ public class Payment extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(TransactionTable);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(717, 225, -1, 384));
 
@@ -136,15 +182,18 @@ public class Payment extends javax.swing.JFrame {
         });
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1231, 11, -1, 34));
 
-        jButton3.setBackground(new java.awt.Color(255, 51, 0));
-        jButton3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton3.setText("Back");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        navBackButton.setBackground(new java.awt.Color(255, 51, 0));
+        navBackButton.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        navBackButton.setText("Back");
+        navBackButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                navBackButtonActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 640, -1, -1));
+        getContentPane().add(navBackButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 640, -1, -1));
+
+        dateSpinner.setModel(new javax.swing.SpinnerDateModel());
+        getContentPane().add(dateSpinner, new org.netbeans.lib.awtextra.AbsoluteConstraints(353, 390, 120, 30));
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/diusmartcity/payamentinfo.jpg"))); // NOI18N
         getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -153,16 +202,44 @@ public class Payment extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void navBackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_navBackButtonActionPerformed
         // TODO add your handling code here:
         dispose();
         new StudentPortal().setVisible(true);
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_navBackButtonActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         System.exit(0);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void payButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payButtonActionPerformed
+        // TODO add your handling code here:
+        String paymentType = paymentTypeCombo.getSelectedItem().toString();
+        Double amount = Double.parseDouble(amountField.getText());
+        String date = dateSpinner.getValue().toString();
+        String transactionNumber = generateTransactionID(7);
+        
+        String SQL = "INSERT INTO payments(studentId,type,amount,date,transactionId) VALUES('"+this.studentId+"','"+paymentType+"','"+amount+"','"+date+"','"+transactionNumber+"')";
+        String updateSQL = "UPDATE student SET paid=paid+'"+amount+"',payable=payable-'"+amount+"' WHERE id='"+this.studentId+"'";
+        
+        
+        
+        try{
+                try (Statement stmt = conn.createStatement()) {
+                    stmt.execute(SQL);
+                    stmt.execute(updateSQL);
+                    JOptionPane.showMessageDialog(null, "Successful payment\nTransactionNo. '"+transactionNumber+"'","Payment Confirmation",JOptionPane.INFORMATION_MESSAGE);
+                    
+                    dispose();
+                    new Payment(this.studentId).setVisible(true);
+                    
+                }
+        }catch(SQLException e) {
+            System.out.println("Something went wrong :"+e);
+        }
+        
+    }//GEN-LAST:event_payButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -200,23 +277,21 @@ public class Payment extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JTable TransactionTable;
+    private javax.swing.JTextField amountField;
+    private javax.swing.JSpinner dateSpinner;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JButton navBackButton;
+    private javax.swing.JButton payButton;
+    private javax.swing.JComboBox<String> paymentTypeCombo;
     // End of variables declaration//GEN-END:variables
 }

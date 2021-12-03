@@ -262,6 +262,7 @@ public class Admission extends javax.swing.JFrame {
             Statement stmt = conn.createStatement();
             
             ResultSet rs = stmt.executeQuery(QUERY);
+            
             rs.next();
             int count = rs.getInt("rowcount") ;
             
