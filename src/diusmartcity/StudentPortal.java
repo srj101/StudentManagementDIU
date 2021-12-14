@@ -9,7 +9,7 @@ import java.awt.Color;
 
 /**
  *
- * @author SheikhFoysal
+ * @author SRJOY
  */
 public class StudentPortal extends javax.swing.JFrame {
 

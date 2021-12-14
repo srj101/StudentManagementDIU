@@ -11,10 +11,10 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-// Bhalo
+
 /**
  *
- * @author SheikhFoysal
+ * @author SRJOY
  */
 public class Admission extends javax.swing.JFrame {
 
@@ -167,6 +167,11 @@ public class Admission extends javax.swing.JFrame {
 
         departmentCombo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         departmentCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CSE", "EEE", "Pharmacy", "BBA", "NFE" }));
+        departmentCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                departmentComboActionPerformed(evt);
+            }
+        });
         jPanel2.add(departmentCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 20, 97, -1));
         jPanel2.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 480, 1230, -1));
 
@@ -182,11 +187,11 @@ public class Admission extends javax.swing.JFrame {
 
         genderCombo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         genderCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Male", "Female", "Others" }));
-        jPanel2.add(genderCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 80, -1, -1));
+        jPanel2.add(genderCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 80, 100, -1));
 
         bloodCombo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         bloodCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "A+ve", "A-ve", "B+ve", "B-ve", "O+ve", "O-ve", "AB+ve", "AB-ve" }));
-        jPanel2.add(bloodCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 150, -1, -1));
+        jPanel2.add(bloodCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 150, 100, -1));
 
         jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/diusmartcity/admission.jpg"))); // NOI18N
         jPanel2.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -288,6 +293,10 @@ public class Admission extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_admissionButtonActionPerformed
+
+    private void departmentComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_departmentComboActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_departmentComboActionPerformed
 
     /**
      * @param args the command line arguments

@@ -18,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author SheikhFoysal
+ * @author SRJOY
  */
 public class Library extends javax.swing.JFrame {
 
@@ -46,7 +46,6 @@ public class Library extends javax.swing.JFrame {
 
                     while(rs.next()){
                         String bookNo = Integer.toString(rs.getInt("bookNo"));
-                        System.out.println(bookNo);
                         String bookName = rs.getString("bookName");
                         String date = rs.getString("date");
                         

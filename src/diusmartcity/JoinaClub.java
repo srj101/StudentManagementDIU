@@ -19,7 +19,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author SheikhFoysal
+ * @author SRJOY
  */
 public class JoinaClub extends javax.swing.JFrame {
 

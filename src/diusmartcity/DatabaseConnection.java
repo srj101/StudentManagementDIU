@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author SheikhFoysal
+ * @author SRJOY
  */
 public class DatabaseConnection {
     public Connection getcon() {
@@ -31,6 +31,7 @@ public class DatabaseConnection {
             conn = DriverManager.getConnection("jdbc:mysql://sql6.freesqldatabase.com:3306/sql6455505","sql6455505","ndyl1XDiJi");
             System.out.println("Database connected!");
         } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Cannot connect the database!");
             throw new IllegalStateException("Cannot connect the database!", e);
         }   
         return conn;

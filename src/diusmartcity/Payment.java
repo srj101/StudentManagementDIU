@@ -17,7 +17,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author SheikhFoysal
+ * @author SRJOY
  */
 public class Payment extends javax.swing.JFrame {
 
