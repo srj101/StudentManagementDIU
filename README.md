@@ -1,5 +1,5 @@
 # DIU Smart City
-![drawing](https://lh5.googleusercontent.com/75atNmCf8EmR57sAd7tTggS5NhKNRzsT4HvS47-nOmjuyb7ks1oZDuPwO7vHJFVZdwDe-rKhO8ASOwXN8JbBzHo=w16383)
+![drawing](https://i.ibb.co/pLgDx2p/Embedded-Image.png)
 
 [![Build Status](https://i.ibb.co/PmgmtFc/Screenshot-2022-06-22-at-2-16-22-PM.png)](https://sites.google.com/view/srjoy-quizapp/home)
 
