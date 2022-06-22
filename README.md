@@ -28,7 +28,7 @@ Developed By
 ## Top Features
 | Feature  |  In Short | Details |
 | -------  | --------  | ------- |
-| `Student Portal` | Students can navigate to different pages from student portal according to their need &ensp;&emsp;&emsp; &emsp;![drawing](https://i.ibb.co/VB9yxBh/Screenshot-1.png) | [https://sites.google.com/view/srjoy-quizapp/functionalities?authuser=0#h.cr5a7ugmomdv] |
+| `Student Portal` | Students can navigate to different pages from student portal according to their need &ensp;&emsp;&emsp; <br/> &emsp;![drawing](https://i.ibb.co/VB9yxBh/Screenshot-1.png) | [https://sites.google.com/view/srjoy-quizapp/functionalities?authuser=0#h.cr5a7ugmomdv] |
 | `Admission System` | This admission system provides students with their new university email, payment schema and waiver information, Login credentials right after they get admitted. &ensp;&emsp;&emsp; &emsp; ![drawing](https://i.ibb.co/tZkPSbH/Screenshot-6.png) | [https://sites.google.com/view/srjoy-quizapp/functionalities?authuser=0#h.x0s7ca65083i] |
 | `Joining Clubs` | To join a club students can select a club from the list and click join in seconds.  &ensp;&emsp;&emsp; &emsp;![drawing](https://i.ibb.co/xLnfGtv/Screenshot-2.png)  | [https://sites.google.com/view/srjoy-quizapp/functionalities?authuser=0#h.dywqm330p79g] |
 | `Payment System` | Students can pay mid and final examination payments through this portion of the software. They will receive a transaction ID each time they make a payment.  &ensp;&emsp;&emsp; &emsp;![drawing](https://i.ibb.co/WFZbd8g/Screenshot-4.png) | [https://sites.google.com/view/srjoy-quizapp/functionalities?authuser=0#h.aw9kf3f6srp] |
